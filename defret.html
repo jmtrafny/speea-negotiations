@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="description" content="An independent, in-browser tool for SPEEA-represented Boeing employees: decide what matters before the contract arrives, weigh tradeoffs, and keep a versioned voting policy. Made by one engineer. Not affiliated with SPEEA or Boeing.">
+<title>Contract Policy Modeler · SPEEA / Boeing</title>
+<style>
+:root{--ink:#142239;--muted:#5b6678;--paper:#f3f5f9;--surface:#fff;--line:#d6dde8;--accent:#8fc1f0;--forest:#1d3f6e;--soft:#e6eef8;--warm:#f7eee1;--warn:#7b511c;--danger:#9d4237;--radius:15px;--shadow:0 5px 24px #1a2f4f08}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.6 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,textarea,select{font:inherit}button,a,input,textarea,select{touch-action:manipulation}button{cursor:pointer}button:disabled{cursor:not-allowed;opacity:.48}a{color:var(--forest)}:focus-visible{outline:3px solid #2f6db5;outline-offset:3px}h1,h2,h3,h4,p{margin-top:0}h1{font-size:clamp(29px,3.2vw,43px);line-height:1.15;font-weight:620;letter-spacing:-1.6px;margin-bottom:17px}h2{font-size:22px;line-height:1.3;letter-spacing:-.4px}h3{font-size:17px;line-height:1.4}p{margin-bottom:17px}.app-shell{display:grid;grid-template-columns:254px minmax(0,1fr);min-height:100vh}.rail{background:#e9eef5;border-right:1px solid var(--line);padding:31px 24px 22px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column}.brand{display:flex;align-items:center;gap:11px;text-decoration:none;font-size:22px;font-weight:680;letter-spacing:-.8px;line-height:1.1}.brand small{display:block;font-size:8px;letter-spacing:1.2px;font-weight:600;margin-top:6px;color:#3b6ea8;white-space:nowrap}.brand-symbol{display:flex;align-items:center;justify-content:center;width:44px;height:44px;background:var(--forest);color:#eff4e7;border-radius:13px;font-size:24px;font-weight:700}.rail-intro{font-size:23px;line-height:1.33;letter-spacing:-.55px;margin:39px 0 28px}.rail-intro em{font-family:Georgia,serif;font-weight:400}.step-link{display:flex;align-items:center;gap:12px;border:0;background:none;width:100%;border-radius:10px;color:var(--muted);padding:11px 10px;text-align:left;margin-bottom:5px;font-size:14px}.step-link:hover{background:#dbe4f0}.step-link.active{background:var(--forest);color:white}.step-index{font-size:11px;letter-spacing:.6px;opacity:.75}.rail-bottom{margin-top:auto;padding-top:28px;font-size:12px;font-weight:620}.rail-bottom>span:last-of-type{font-weight:400;color:var(--muted);display:inline-block;margin:7px 0 8px;font-size:11px}.privacy-dot{width:7px;height:7px;border-radius:50%;background:#2f7ac7;display:inline-block;margin-right:6px}.text-btn{display:block;padding:0;background:none;border:none;text-decoration:underline;text-underline-offset:3px;font-size:11px;color:var(--muted)}.workspace{min-width:0}.topbar{padding:22px 45px 17px;display:flex;align-items:center;justify-content:space-between;gap:20px;border-bottom:1px solid var(--line)}.eyebrow{font-size:10px;font-weight:740;letter-spacing:1.7px;color:var(--forest)}.save-status{font-size:11px;color:var(--muted);margin-top:4px}.toolbar{display:flex;align-items:center;gap:8px}.button{display:inline-flex;align-items:center;justify-content:center;border:1px solid #c3cedd;border-radius:9px;padding:10px 17px;background:#fff;color:var(--ink);font-weight:600;font-size:13px;line-height:1.45;text-decoration:none}.button:hover{background:#e8eef6}.button.primary{background:var(--forest);color:white;border-color:var(--forest)}.button.primary:hover{background:#152f54}.button.small{padding:7px 12px;font-size:12px}.button.quiet{background:transparent;border-color:transparent}.button.danger{color:var(--danger);border-color:#ddc4be}.icon-button{border:0;background:transparent;color:var(--muted);font-size:22px;line-height:1;padding:8px}.subbar{display:flex;align-items:center;gap:14px;padding:14px 45px 0}.progress-track{background:#dde4ee;height:4px;flex:1;border-radius:4px;overflow:hidden}.progress-track>div{height:100%;background:#3577c4;transition:width .2s}.subbar>span{font-size:10px;color:var(--muted);white-space:nowrap}main{padding:29px 45px 40px;max-width:1220px;margin:0 auto;min-height:calc(100vh - 205px)}.page-kicker{font-size:10px;font-weight:740;letter-spacing:2px;color:#3b6ea8;margin-bottom:10px}.lead{font-size:16px;color:var(--muted);line-height:1.65;max-width:790px;margin-bottom:26px}.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:24px;margin-bottom:18px;box-shadow:var(--shadow)}.card-header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}.card-header h2,.card-header h3{margin-bottom:7px}.card p:last-child{margin-bottom:0}.hero-note{background:var(--soft);border:1px solid #cfdcee;border-radius:var(--radius);padding:21px 23px;margin-bottom:24px;display:flex;gap:16px;align-items:flex-start}.hero-note .note-mark{display:inline-flex;align-items:center;justify-content:center;background:#d3e2f4;border-radius:10px;min-width:34px;height:34px;font-size:19px}.hero-note strong{font-size:14px}.hero-note p{font-size:13px;line-height:1.6;margin:5px 0 0;color:#4a5d78}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.field{display:block;margin-bottom:19px;min-width:0}.field:last-child{margin-bottom:0}.field-label{font-size:13px;font-weight:650;display:block;margin-bottom:6px}.field-help{font-size:11px;color:var(--muted);display:block;line-height:1.55;margin-bottom:9px}.field input:not([type=range]),.field textarea,.field select{width:100%;border:1px solid #c6d0de;border-radius:8px;background:#fff;padding:10px 12px;color:var(--ink);font-size:13px;line-height:1.5}.field textarea{resize:vertical;min-height:84px}.field input::placeholder,.field textarea::placeholder{color:#8894a6;opacity:1}.field input:disabled,.field textarea:disabled,.field select:disabled{background:#f3f5f8;color:#5c6878}.optional{font-weight:400;color:var(--muted);font-size:10px;margin-left:7px}.muted{color:var(--muted)}.micro{font-size:11px;color:var(--muted);line-height:1.6}.small-copy{font-size:13px}.tag{display:inline-block;background:var(--soft);border-radius:99px;font-size:10px;font-weight:650;padding:4px 10px;white-space:nowrap;letter-spacing:.3px}.tag.subtle{background:#eef1f6;color:var(--muted)}.tag.warn{background:var(--warm);color:var(--warn)}.callout{border-left:3px solid #7fadde;background:#eef3fa;padding:14px 17px;font-size:12px;line-height:1.7;margin:17px 0;border-radius:0 9px 9px 0}.callout.warn{background:var(--warm);border-color:#c99d5d;color:var(--warn)}.divider{height:1px;background:var(--line);margin:24px 0}.accordion{background:white;border:1px solid var(--line);border-radius:var(--radius);margin-bottom:14px;overflow:hidden}.accordion>summary{padding:19px 21px;cursor:pointer;display:flex;align-items:center;gap:12px;list-style:none}.accordion>summary::-webkit-details-marker{display:none}.accordion>summary:before{content:'+';font-size:20px;color:#7a8aa3;min-width:15px}.accordion[open]>summary:before{content:'−'}.accordion-title{flex:1;min-width:0}.accordion-title strong{font-size:15px}.accordion-title small{display:block;font-size:11px;color:var(--muted);margin-top:2px}.accordion-body{padding:2px 22px 24px}.mode-picker{display:flex;gap:7px;flex-wrap:wrap;margin:19px 0}.pill{border:1px solid var(--line);background:white;border-radius:8px;padding:8px 12px;font-size:12px;color:var(--muted)}.pill.selected{background:#e3edf9;border-color:#7fa9d9;color:#1f4a7c;font-weight:650}.anchor-label{display:flex;align-items:center;gap:6px}.anchor-index{display:inline-block;border-radius:5px;padding:2px 6px;background:var(--soft);font-size:10px;margin-right:4px}.hard-box{border-top:1px solid var(--line);padding-top:16px;margin-top:15px}.priority-row{display:grid;grid-template-columns:40px minmax(0,1fr) 195px;align-items:center;gap:14px;border-bottom:1px solid var(--line);padding:18px 0}.priority-row:last-child{border:0}.reorder{display:flex;flex-direction:column;align-items:center;gap:1px}.reorder button{border:0;border-radius:4px;background:#eef2f7;padding:0 7px;color:#4a6a94;font-size:14px}.reorder span{font-size:11px;color:var(--muted)}.weight-name{font-size:14px;font-weight:650;margin-bottom:5px}.swing-line{font-size:11px;color:var(--muted);line-height:1.55}.weight-controls{display:grid;grid-template-columns:1fr 60px;gap:10px;align-items:center}.weight-controls input[type=number]{width:60px;border:1px solid var(--line);border-radius:6px;padding:5px 6px;font-size:12px}.weight-controls input[type=range]{width:100%;accent-color:var(--forest)}.weight-percent{grid-column:1 / -1;font-size:11px;color:var(--muted);text-align:right}.weight-bar{display:flex;height:10px;background:#e9edf3;overflow:hidden;border-radius:6px;margin:15px 0 12px}.weight-segment{height:100%;border-right:2px solid white}.weight-legend{display:flex;flex-wrap:wrap;gap:7px 15px;font-size:11px}.legend-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:4px}.choice-card{border:1px solid var(--line);background:#f7f9fc;border-radius:10px;padding:16px;min-width:0}.choice-card .upper-title{font-size:11px;letter-spacing:1px;color:#4a6a94;text-transform:uppercase}.choice-card p{font-size:12px;white-space:pre-wrap;margin:8px 0}.choice-buttons{display:flex;gap:8px;flex-wrap:wrap;margin:17px 0}.choice-buttons .button.selected{background:var(--forest);color:white;border-color:var(--forest)}.inline-nav{display:flex;align-items:center;justify-content:space-between;gap:12px}.outcome-select{display:grid;grid-template-columns:155px minmax(0,1fr);gap:13px;align-items:start;padding:13px 0;border-bottom:1px solid #e9edf3}.outcome-select label{font-size:12px;font-weight:650;padding-top:8px}.outcome-select select{width:100%;max-width:100%;padding:8px;border:1px solid var(--line);border-radius:7px;font-size:12px;color:var(--ink);background:#fff}.level-preview{font-size:11px;color:var(--muted);margin-top:5px;white-space:pre-wrap;overflow-wrap:anywhere}.bundle-card{border:1px solid var(--line);border-radius:10px;padding:15px 17px;margin:10px 0;background:#f9fafc}.bundle-card strong{font-size:13px}.bundle-card .meta{font-size:11px;color:var(--muted);margin-top:5px}.bundle-index{font-size:23px;font-weight:600;letter-spacing:-.6px}.audit-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid #e9edf3;font-size:12px}.audit-item:last-child{border:0}.audit-dot{width:6px;height:6px;min-width:6px;background:#b88a48;border-radius:50%;margin-top:7px}.audit-item .text-link{margin-left:auto;font-size:11px;border:0;background:none;white-space:nowrap;color:#2f6db5;text-decoration:underline}.status-card{background:var(--soft);padding:20px 24px;border:1px solid #cdd9ea;border-radius:13px;margin-bottom:20px}.status-card h2{font-size:19px;margin-bottom:6px}.status-card p{font-size:12px;margin:0;color:#4a5d78}.status-card.warn{background:#faf3e7;border-color:#e8d8bc}.policy-preview{font-family:inherit;line-height:1.75;font-size:12px;white-space:pre-wrap;overflow-wrap:anywhere;margin:0;max-height:680px;overflow:auto;padding-right:10px}.action-row{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.checkbox-row{display:flex;align-items:flex-start;gap:10px;margin:15px 0;font-size:12px}.checkbox-row input{margin-top:5px;accent-color:var(--forest)}.checkbox-row small{display:block;color:var(--muted);margin-top:4px;font-size:11px}.step-footer{border-top:1px solid var(--line);padding:19px 45px;display:flex;align-items:center;justify-content:space-between;gap:15px}.step-footer>span{font-size:10px;letter-spacing:1.5px;color:var(--muted)}.site-note{padding:14px 45px 24px;font-size:11px;color:var(--muted);line-height:1.65;border-top:1px solid var(--line);background:#e9eef5}.site-note button{display:inline;padding:0;background:none;border:0;text-decoration:underline;text-underline-offset:3px;color:inherit;font-size:inherit}.empty{padding:25px;text-align:center;color:var(--muted);font-size:13px;border:1px dashed #c6d0de;border-radius:12px;background:#f8fafc}.frozen-banner{background:#e6eef8;border:1px solid #b3c9e6;border-radius:10px;padding:12px 17px;display:flex;align-items:center;justify-content:space-between;gap:15px;font-size:12px;margin-bottom:20px}.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);padding:12px 20px;background:var(--forest);color:white;border-radius:10px;box-shadow:0 5px 20px #0002;font-size:12px;max-width:min(90vw,600px);z-index:100;opacity:0;pointer-events:none;transition:all .18s}.toast.visible{opacity:1;transform:translateX(-50%) translateY(0)}dialog{border:1px solid var(--line);border-radius:18px;max-width:680px;width:calc(100% - 32px);padding:28px;color:var(--ink);max-height:90vh}dialog::backdrop{background:#142239a0;backdrop-filter:blur(2px)}dialog p{font-size:13px}dialog h3{margin-top:22px}.dialog-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}.dialog-top h2{margin:0}.source-links{font-size:11px!important;line-height:2}.skip{position:fixed;top:-100px;left:20px;background:white;padding:10px;z-index:1000}.skip:focus{top:10px}#print-output{display:none}.method-buttons{display:flex;gap:12px;flex-wrap:wrap;margin:18px 0}.method-button{border:1px solid #c6d0de;background:#fff;border-radius:12px;padding:16px 19px;color:var(--ink);text-align:left;flex:1;min-width:210px}.method-button strong{font-size:14px;display:block}.method-button small{display:block;color:var(--muted);margin-top:5px;font-size:11px}.method-button.selected{border:2px solid #3577c4;background:#ebf2fb;padding:15px 18px}.number-badge{font-size:11px;color:#3b6ea8;background:#ebf2fb;border:1px solid #cfdcee;border-radius:7px;padding:4px 8px}.inline-note{font-size:11px;line-height:1.6;color:var(--muted);margin:8px 0}.frozen-fields input,.frozen-fields textarea,.frozen-fields select{pointer-events:none}.break-word{overflow-wrap:anywhere}.checklist{padding-left:17px;font-size:12px}.checklist li{padding:3px 0}.table-wrap{overflow-x:auto}.data-table{border-collapse:collapse;width:100%;font-size:11px}.data-table th,.data-table td{padding:10px;border-bottom:1px solid var(--line);text-align:left}.data-table th{background:#f1f4f8;font-weight:650}.switch-note{margin-bottom:0;font-size:12px}.hidden{display:none!important}
+@media(min-width:1450px){main{padding-top:44px}.lead{max-width:850px}.rail{padding-top:38px}.topbar{padding-top:26px;padding-bottom:22px}}
+@media(max-width:1050px){.app-shell{grid-template-columns:220px minmax(0,1fr)}.rail{padding:25px 17px}.topbar,.subbar,.step-footer{padding-left:27px;padding-right:27px}main{padding-left:27px;padding-right:27px}.grid3{grid-template-columns:1fr}.priority-row{grid-template-columns:30px minmax(0,1fr)}.weight-controls{grid-column:2;max-width:250px}.rail-intro{font-size:21px}.grid2{gap:14px}}
+@media(max-width:740px){.app-shell{display:block}.rail{position:static;height:auto;padding:17px 20px;border-right:0;border-bottom:1px solid var(--line)}.brand{font-size:19px}.brand small{font-size:7px}.brand-symbol{width:37px;height:37px}.rail-intro,.rail-bottom{display:none}.rail nav{display:flex;overflow-x:auto;gap:4px;margin-top:17px;scrollbar-width:thin}.step-link{white-space:nowrap;width:auto;margin-bottom:0;padding:8px 11px;font-size:12px;gap:6px}.step-index{font-size:9px}.topbar{padding:15px 20px;gap:10px;align-items:flex-start}.save-status{max-width:210px;font-size:10px}.toolbar{gap:3px}.button.small{font-size:10px;padding:6px 8px}.subbar{padding:13px 20px 0}main{padding:24px 20px 28px;min-height:unset}.grid2{grid-template-columns:1fr}.card{padding:19px}.hero-note{padding:17px;gap:12px}.lead{font-size:14px}.step-footer{padding:17px 20px}.step-footer>span{font-size:9px}.site-note{padding:12px 20px 20px}.field textarea{min-height:85px}.outcome-select{grid-template-columns:1fr;gap:3px}.outcome-select label{padding:0}.frozen-banner{align-items:flex-start}.policy-preview{font-size:11px}.subbar>span{font-size:9px}.accordion>summary{padding:17px}.accordion-body{padding:0 17px 20px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+@media print{body{background:white;font-size:11pt}.app-shell,.toast,dialog,.skip{display:none!important}#print-output{display:block!important;white-space:pre-wrap;overflow-wrap:anywhere;font:10pt/1.5 system-ui,sans-serif;color:black;margin:0}#print-output:before{content:'CONTRACT POLICY MODELER / PERSONAL VOTING POLICY / INDEPENDENT TOOL, NOT AFFILIATED WITH SPEEA OR BOEING';display:block;font-size:8pt;letter-spacing:2px;margin-bottom:15px}a{color:black}@page{size:auto;margin:18mm}}
+
+@media(max-width:740px){.card-header{flex-wrap:wrap;gap:9px}.toolbar{flex-shrink:0}.toolbar .button{white-space:nowrap}.card-header h2{margin-bottom:0}}
+
+</style>
+</head>
+<body>
+<a class="skip" href="#content">Skip to the current step</a>
+<div class="app-shell">
+<aside class="rail" aria-label="Application navigation">
+  <a class="brand" href="#" id="home-link" aria-label="Contract Policy Modeler, first step"><span class="brand-symbol" aria-hidden="true">✓</span><span>Policy Modeler<small>SPEEA · BOEING CONTRACT</small></span></a>
+  <div class="rail-intro">Know your vote<br><em>before</em> the contract<br>arrives.</div>
+  <nav id="steps" aria-label="Policy-building steps"></nav>
+  <div class="rail-bottom"><span class="privacy-dot"></span> Independent &amp; local<br><span>Made by one SPEEA-represented Boeing engineer. Not a SPEEA or Boeing product.<br>No account. No analytics. No contract terms built in.</span><button class="text-btn" id="about-btn">About, affiliation &amp; privacy</button></div>
+</aside>
+<div class="workspace">
+<header class="topbar">
+  <div><span class="eyebrow" id="revision">WORKING DRAFT · REVISION 1</span><div class="save-status" id="save-status" role="status">Session only · export JSON to keep your work</div></div>
+  <div class="toolbar"><button class="button small quiet" id="import-btn">Import JSON</button><button class="button small" id="export-btn">Export JSON</button><button class="icon-button" id="settings-btn" aria-label="Storage and reset settings" title="Storage and reset settings">⚙</button></div>
+</header>
+<div class="subbar"><div class="progress-track" aria-hidden="true"><div id="progress-bar"></div></div><span id="completion">Getting started</span></div>
+<main id="content" tabindex="-1"></main>
+<footer class="step-footer"><button class="button quiet" id="back-btn">← Back</button><span id="step-count">STEP 1 OF 6</span><button class="button primary" id="next-btn">Define outcomes →</button></footer>
+<div class="site-note"><strong>Independent tool.</strong> Built by one SPEEA-represented Boeing engineer on personal time. Not affiliated with, endorsed by, or reviewed by SPEEA or The Boeing Company. Contains no contract terms and makes no vote recommendation. <button type="button" data-action="about">About &amp; privacy</button></div>
+</div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<dialog id="settings-dialog" aria-labelledby="settings-title">
+<div class="dialog-top"><h2 id="settings-title">Keep your work</h2><button class="icon-button" data-close aria-label="Close settings">×</button></div>
+<p>After the page loads, it makes no network requests. Nothing you type is sent to a server.</p>
+<label class="checkbox-row"><input type="checkbox" id="remember-toggle"><span><strong>Remember this profile in this browser</strong><small>Optional and unencrypted. Other people or software with access to this browser profile may be able to read it.</small></span></label>
+<div class="callout">Browser storage is tied to this site in this browser and does not follow you to another device. <strong>Export JSON is your portable backup.</strong> Clearing browser data can erase local saves.</div>
+<p class="muted">JSON exports contain your complete profile, including private context and archived revisions. Policy-text exports omit selected structured private fields by default, but do not automatically redact your writing.</p>
+<div class="divider"></div><button class="button danger" id="reset-btn">Erase profile & start fresh</button><p class="micro">This erases this app’s browser save and current session. It does not delete files you already exported.</p>
+</dialog>
+<dialog id="about-dialog" aria-labelledby="about-title">
+<div class="dialog-top"><h2 id="about-title">A policy modeler, not a voting guide</h2><button class="icon-button" data-close aria-label="Close about dialog">×</button></div>
+<h3 style="margin-top:0">Who made this</h3><p>One person: a SPEEA-represented engineer at Boeing, working on personal time. This page is not a SPEEA product and not a Boeing product. No one at either organization reviewed, endorsed, or sponsored it, and it does not speak for either. SPEEA and Boeing are named only to describe the contract vote it is meant to help with.</p><h3>What it does</h3><p>It helps you write down the conditions, priorities, tradeoffs, and evidence rules you want to use before you read a tentative agreement. Decide what matters first, and reading the contract becomes a checklist instead of a scramble. It contains no SPEEA or Boeing contract terms, no bargaining updates, and starts with no weights or salary targets. It does not tell you how to vote.</p>
+<h3>What the numbers mean</h3><p>You define lower, halfway-in-value, and upper outcomes. Relative “swing” weights describe how much each full improvement matters to you. Weights are not objective importance ratings. Ordering alone cannot supply the size of a tradeoff.</p>
+<h3>What the checks do not establish</h3><p>The prototype compares a few of your explicit preferences with a simple additive model. It cannot establish that your preferences are perfectly consistent. Combinations of outcomes may need different rules. Personal conditions and uncertainty still require human interpretation.</p>
+<p>Free-text rules are recorded, not executed. The prototype does not parse contracts, validate legal enforceability, map real provisions to scores, forecast bargaining outcomes, or recommend a vote. The optional local sensitivity check changes one weight at a time. It is not exhaustive.</p>
+<h3>Privacy and sharing</h3><p>This page uses no external fonts, libraries, analytics, or accounts, and its content security policy blocks it from connecting anywhere after it loads. The host serves the page and sees the request for it, as with any website. Nothing you type is sent to it. Saving in the browser is optional. Files you export and text you copy are not encrypted. The link always opens a blank policy. Share the link rather than a filled-in JSON profile.</p>
+<p>“Freeze” is a workflow lock, not a security feature. A revision preserves the prior policy text. Snapshot IDs are non-cryptographic change markers, not signatures. Importing a profile does not certify who created it.</p>
+<h3>Method references</h3><p class="source-links"><a href="https://assets.publishing.service.gov.uk/media/5a790545e5274a2acd18b975/1132618.pdf" target="_blank" rel="noopener noreferrer">UK government · Multi-criteria analysis: a manual (2009), §§5.4 and 6.2</a><br><a href="https://www.nasa.gov/reference/6-8-decision-analysis/" target="_blank" rel="noopener noreferrer">NASA · Systems Engineering Handbook, Decision Analysis</a><br><a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage" target="_blank" rel="noopener noreferrer">MDN · Browser storage (localStorage)</a></p>
+<p class="micro">These links open only when clicked and leave this site. They document the method. None of them endorses a contract outcome. Version 0.2.0 · independent project · not a validated assessment instrument.</p>
+</dialog>
+<input type="file" id="file-input" accept=".json,application/json" hidden>
+<section id="print-output" aria-hidden="true"></section>
+<noscript><div style="padding:32px">This application needs JavaScript enabled. It runs entirely inside your browser.</div></noscript>
+<script>
+/* Contract Policy Modeler 0.2.0 — deterministic, dependency-free policy-builder model.
+   Independent project. Not affiliated with SPEEA or The Boeing Company.
+   No contract interpretation, individual data collection, or voting recommendation. */
+(function(root) {
+  'use strict';
+  const VERSION = '0.2.0';
+  const DIMENSIONS = [
+    ['pay', 'Pay & purchasing power', 'Define guaranteed general wage increases across the contract term, their timing, your inflation assumptions, and the market reference you choose. Keep lump sums, bonuses, and selective raises distinguishable from guaranteed pay.'],
+    ['remote', 'Remote work & location', 'Define the actual arrangement and how reliably it survives management changes. A written contractual right and a revocable company policy are different outcomes.'],
+    ['time', 'Hours, leave & flexibility', 'Define hours, overtime, travel, schedule control, leave, and the ability to use it. Do not count commute time here if already valued under remote work.'],
+    ['health', 'Health & other benefits', 'Define premium shares, plan choices, out-of-pocket exposure, dependent coverage, and other benefits that matter to you across the contract term.'],
+    ['retirement', 'Retirement', 'Define company retirement contributions, matching, eligibility, vesting, and the part of retirement security not already counted in pay.'],
+    ['security', 'Employment & transition security', 'Define layoff protections, continued employment, equivalent placement, retraining, relocation limits, notice, severance, or continued coverage. Distinguish keeping a job from an exit package.'],
+    ['coworkers', 'Coworker outcomes', 'Define whose outcomes matter and what improvement you value. Keep your own benefit separate from the additional value of how others are treated.'],
+    ['voice', 'Voice & fair process', 'Define independently valuable procedural rights, representation, or accountability. Do not count enforcement twice when already included in another outcome.']
+  ];
+  const FRAME_KEYS = ['title','purpose','horizon','reference','salary','commute','arrangement','financialGoal'];
+  const RULE_KEYS = ['evidence','variablePay','uncertainty','scenarios','interactions','history','coworkers','rejection','budget','weeks','closeCall','refresh','stop','scope','independence'];
+  const modeLabels = {dial:'A tradeable outcome',context:'Context only',exclude:'Excluded',undecided:'Not decided'};
+  const choiceLabels = {lower:'Lower-value outcome (0)',middle:'Halfway in personal value (50)',upper:'Upper-value outcome (100)'};
+  function blank() {
+    return {app:'contract-policy-modeler',schemaVersion:1,appVersion:VERSION,revision:1,createdAt:new Date().toISOString(),frozenAt:null,snapshotId:null,
+      frame:Object.fromEntries(FRAME_KEYS.map(k=>[k,''])),method:'',
+      criteria:DIMENSIONS.map(([id,name,help])=>({id,name,help,mode:'undecided',lower:'',middle:'',upper:'',sufficient:'',hard:'',weight:null,notes:''})),
+      pairs:{},packages:[],rules:Object.fromEntries(RULE_KEYS.map(k=>[k,''])),history:[]};
+  }
+  function active(s) {return s.criteria.filter(c=>c.mode==='dial');}
+  function normalized(s) {
+    const cs=active(s), total=cs.reduce((a,c)=>a+(Number.isFinite(c.weight)?c.weight:0),0);
+    return Object.fromEntries(cs.map(c=>[c.id,total>0?100*(c.weight||0)/total:0]));
+  }
+  function weightReady(s) {return s.method==='weights' && active(s).length>0 && active(s).every(c=>Number.isFinite(c.weight)) && active(s).some(c=>c.weight>0);}
+  function packageScore(s, p, override) {
+    if(!weightReady(s) || active(s).some(c=>![0,50,100].includes(p.levels[c.id]))) return null;
+    const w=override||normalized(s);
+    return active(s).reduce((v,c)=>v+(w[c.id]||0)*p.levels[c.id]/100,0);
+  }
+  function pairKey(a,b){return [a,b].sort().join('|');}
+  function allPairs(s) {const cs=active(s), pairs=[]; for(let i=0;i<cs.length;i++)for(let j=i+1;j<cs.length;j++)pairs.push([cs[i],cs[j]]);return pairs;}
+  function pairProblems(s) {
+    const out=[],w=normalized(s), rank=Object.fromEntries(active(s).map((c,i)=>[c.id,i]));
+    for(const [a,b] of allPairs(s)){
+      const answer=s.pairs[pairKey(a.id,b.id)]; if(!answer) continue;
+      if(answer==='depends'){out.push({type:'dependency',text:`The tradeoff between “${a.name}” and “${b.name}” depends on the surrounding package. A simple weighted sum needs review.`});continue;}
+      if(answer==='unsure'){out.push({type:'missing',text:`The tradeoff between “${a.name}” and “${b.name}” is unresolved.`});continue;}
+      if(s.method==='weights'&&weightReady(s)){
+        if((answer===a.id&&w[a.id]<=w[b.id]+1e-8)||(answer===b.id&&w[b.id]<=w[a.id]+1e-8)||(answer==='equal'&&Math.abs(w[a.id]-w[b.id])>1e-8))
+          out.push({type:'conflict',text:`Your full-improvement comparison for “${a.name}” and “${b.name}” differs from your current weights. Review the weights, the choice, or the outcome definitions.`});
+      } else if(s.method==='rank' && answer!=='equal'){
+        const other=answer===a.id?b.id:a.id;
+        if(rank[answer]>rank[other])out.push({type:'conflict',text:`Your comparison of “${a.name}” and “${b.name}” differs from their current ordering.`});
+      }
+    }
+    return out;
+  }
+  function calibrationProblems(s) {
+    if(s.method!=='weights')return [];
+    const boundary=s.packages.find(p=>p.judgment==='boundary'),out=[];
+    if(!boundary)return out;
+    const t=packageScore(s,boundary);if(t===null)return out;
+    for(const p of s.packages){const score=packageScore(s,p);if(score===null)continue;
+      if(p.judgment==='below' && score>=t-1e-8)out.push({type:'conflict',text:`“${p.name}” was marked not acceptable but is at or above your recorded boundary in the additive model.`});
+      if(p.judgment==='above' && score<=t+1e-8)out.push({type:'conflict',text:`“${p.name}” was marked comfortably acceptable but is at or below your recorded boundary in the additive model.`});
+    }
+    return out;
+  }
+  function audit(s) {
+    const result=[];const add=(step,text,type='missing')=>result.push({step,text,type});const cs=active(s);
+    if(!s.frame.purpose.trim())add(0,'Describe what a contract worth voting for should provide.');
+    if(!s.frame.horizon.trim())add(0,'Set a comparison time horizon.');
+    if(!s.frame.reference.trim())add(0,'State the current terms and reference date the offer will be compared against.');
+    if(!cs.length)add(1,'Choose at least one tradeable outcome.');
+    s.criteria.filter(c=>c.mode==='undecided').forEach(c=>add(1,`Decide whether to include, contextualize, or exclude “${c.name}”.`));
+    for(const c of cs){
+      if(!c.name.trim())add(1,'Name each included outcome.');
+      if(!c.lower.trim()||!c.upper.trim()||!c.middle.trim())add(1,`Define the 0 / 50 / 100 outcome anchors for “${c.name}”.`);
+      else if(new Set([c.lower,c.middle,c.upper].map(x=>x.trim().toLowerCase())).size<3)add(1,`Use distinguishable outcome anchors for “${c.name}”.`);
+    }
+    if(!s.method)add(2,'Choose relative weights or an ordering-only policy.');
+    if(s.method==='weights'){
+      cs.filter(c=>c.weight===null).forEach(c=>add(2,`Set a relative swing weight for “${c.name}”.`));
+      if(cs.length&&!cs.some(c=>c.weight>0))add(2,'At least one included swing needs a positive weight.');
+    }
+    if(cs.length>1){
+      const completed=allPairs(s).filter(([a,b])=>[a.id,b.id,'equal'].includes(s.pairs[pairKey(a.id,b.id)])).length;
+      const required=Math.min(3,allPairs(s).length);
+      if(completed<required)add(3,`Complete at least ${required} full-improvement comparisons as an initial check. This is not a proof of consistency.`);
+    }
+    for(const x of pairProblems(s))add(3,x.text,x.type);
+    if(s.method==='weights'){
+      if(!s.packages.some(p=>p.judgment==='boundary'))add(3,'Record a hypothetical whole package that is just acceptable to you.');
+      if(!s.packages.some(p=>p.judgment==='below'))add(3,'Record a different hypothetical package that falls short for you.');
+      for(const x of calibrationProblems(s))add(3,x.text,x.type);
+    }
+    if(s.method==='rank'&&!s.rules.scope.trim())add(4,'Describe how ordering should guide tradeoffs. Ordering alone does not provide an acceptance threshold.');
+    const requiredRules={evidence:'the evidence needed to credit a provision',variablePay:'how to treat contingent compensation',uncertainty:'how to handle ambiguous or missing facts',interactions:'how to handle combined concessions',history:'how history or trust affects this policy (or state “not separately counted”)',coworkers:'how other employees’ interests enter the policy (or state “not separately counted”)',rejection:'how the cost and risk of further bargaining affect the decision',closeCall:'a close-case rule',refresh:'when references or circumstances can be updated',stop:'a stopping rule'};
+    for(const [k,label]of Object.entries(requiredRules))if(!s.rules[k].trim())add(4,`Specify ${label}.`);
+    if(s.method==='weights'&&s.rules.independence!=='reviewed')add(4,'Review overlap and dependency between weighted outcomes.');
+    return result;
+  }
+  function sensitivity(s, percent) {
+    if(!weightReady(s))return [];
+    const w=normalized(s),boundary=s.packages.find(p=>p.judgment==='boundary');if(!boundary)return [];
+    // Each weight is perturbed separately. This is a local diagnostic, not exhaustive uncertainty analysis.
+    const base=packageScore(s,boundary),records=[];
+    for(const c of active(s))for(const direction of [-1,1]){
+      const a={...w};a[c.id]*=(1+direction*percent/100);const total=Object.values(a).reduce((x,y)=>x+y,0);if(total===0)continue;
+      for(const k of Object.keys(a))a[k]=100*a[k]/total;
+      const t=packageScore(s,boundary,a);let crossings=0;
+      for(const p of s.packages.filter(p=>p.judgment!=='boundary')){
+        const before=packageScore(s,p)-base,after=packageScore(s,p,a)-t;
+        if((before>1e-8&&after<=1e-8)||(before< -1e-8&&after>=-1e-8))crossings++;
+      }
+      records.push({criterion:c.name,direction,boundary:t,crossings});
+    }
+    return records;
+  }
+  function hash(value) {
+    // Non-cryptographic change marker only, not a signature or tamper-proof commitment.
+    let h=2166136261;const text=typeof value==='string'?value:JSON.stringify(value);
+    for(let i=0;i<text.length;i++){h^=text.charCodeAt(i);h=Math.imul(h,16777619);}
+    return (h>>>0).toString(16).padStart(8,'0').toUpperCase();
+  }
+  function snapshotId(s){const x={...s,frozenAt:null,snapshotId:null,history:[]};return `CPM-${s.revision}-${hash(x)}`;}
+  function exportPolicy(s,includePrivate=false){
+    const cs=active(s),w=normalized(s),issues=audit(s),lines=[];const put=(x='')=>lines.push(x);
+    put('# '+(s.frame.title.trim()||'My contract voting policy'));put();
+    put(`Revision ${s.revision} · ${s.frozenAt?'Frozen '+s.frozenAt:'Draft'}${s.snapshotId?' · '+s.snapshotId:''}`);put();
+    put('A personal statement of values, tradeoffs, and evidence rules, written before reading the tentative agreement. Not a contract interpretation, validated psychological assessment, or voting recommendation.');put();
+    put('## Purpose and comparison frame');put(s.frame.purpose||'[Purpose not set]');put();put('Time horizon: '+(s.frame.horizon||'[Not set]'));put('Baseline and date: '+(s.frame.reference||'[Not set]'));
+    if(includePrivate){for(const [k,label]of [['salary','Current salary'],['commute','Round-trip commute'],['arrangement','Current arrangement'],['financialGoal','Personal financial goal']])if(s.frame[k])put(label+': '+s.frame[k]);}
+    put();put('## Outcome definitions and priorities');
+    put(s.method==='weights'?'Weights describe the relative value of each defined 0-to-100 improvement, not abstract importance. They do not imply a percentage of a contract is “good.”':s.method==='rank'?'The order below is an ordering of full improvements only. It does not define relative magnitudes or an automatic acceptance threshold.':'[Priority method not set]');
+    cs.forEach((c,i)=>{
+      put();put(`### ${i+1}. ${c.name}${s.method==='weights'?' — '+(weightReady(s)?w[c.id].toFixed(1)+'%':'weight incomplete'):''}`);
+      put('0 — '+(c.lower||'[Not set]'));put('50 — '+(c.middle||'[Not set]'));put('100 — '+(c.upper||'[Not set]'));
+      if(c.sufficient)put('A sufficient outcome in this dimension (not automatically a veto): '+c.sufficient);
+      if(c.hard)put('Non-tradeable condition, evaluated separately: '+c.hard);
+      if(c.notes)put('Mapping / measurement notes: '+c.notes);
+    });
+    const context=s.criteria.filter(c=>c.mode==='context'),excluded=s.criteria.filter(c=>c.mode==='exclude');
+    if(context.length){put();put('Context-only topics: '+context.map(c=>c.name).join('; '));}
+    if(excluded.length){put();put('Considered but excluded: '+excluded.map(c=>c.name).join('; '));}
+    put();put('## Hypothetical package calibration');
+    if(s.method==='weights'){
+      const boundary=s.packages.find(p=>p.judgment==='boundary'),score=boundary?packageScore(s,boundary):null;
+      put(score===null?'No calibrated comparison boundary yet.':`My recorded just-acceptable hypothetical bundle has index ${score.toFixed(2)} under these outcome anchors and weights. This is a provisional additive-model boundary, not a recommended vote.`);
+      for(const p of s.packages){const n=packageScore(s,p);put();put(`**${p.name}** — my judgment: ${ {below:'not acceptable',boundary:'just acceptable',above:'comfortably acceptable'}[p.judgment]}${n===null?'':' · model index '+n.toFixed(2)}`);
+        cs.forEach(c=>put(`- ${c.name}: ${c[{0:'lower',50:'middle',100:'upper'}[p.levels[c.id]]]||'[Missing outcome]'}`));
+        if(p.reason)put('My reason: '+p.reason);
+      }
+      put();put('The prototype uses only the explicitly defined 0 / 50 / 100 levels. It does not infer scores for unseen contract language, interpolate pay, or evaluate hard conditions or interaction rules. Those require an explicit mapping and human review before applying this policy to an offer.');
+    }else put('No numerical boundary is inferred from ordering alone.');
+    put();put('## Tradeoff cross-checks');
+    const pairs=allPairs(s).filter(([a,b])=>s.pairs[pairKey(a.id,b.id)]);
+    if(!pairs.length)put('[No comparisons recorded]');
+    for(const[a,b]of pairs){const answer=s.pairs[pairKey(a.id,b.id)];put(`${a.name} versus ${b.name}: ${answer===a.id?'I value the full improvement in '+a.name+' more':answer===b.id?'I value the full improvement in '+b.name+' more':answer==='equal'?'equal value':answer==='depends'?'depends on the rest of the package':'unresolved'}.`);}
+    put();put('## Evidence, circumstances, and decision rules');
+    const rlabels={evidence:'Evidence needed',variablePay:'Contingent pay',uncertainty:'Unknown or ambiguous facts',scenarios:'Scenario assumptions',interactions:'Combined losses and overlap',history:'History and trust',coworkers:'Other employees',rejection:'Further-bargaining cost and risk',closeCall:'Close cases',refresh:'Updating references and circumstances',stop:'Stopping rule',scope:'How the policy is applied'};
+    for(const[k,label]of Object.entries(rlabels)){put();put('**'+label+':** '+(s.rules[k]||'[Not set]'));}
+    if(includePrivate){if(s.rules.budget)put('\nPersonal maximum additional cost: '+s.rules.budget);if(s.rules.weeks)put('Personal disruption horizon: '+s.rules.weeks);}
+    put();put('## Readiness and limitations');
+    if(issues.length)issues.forEach(x=>put('- '+x.text));else put('The prototype’s required fields and limited consistency checks are complete. This does not establish that the model is exhaustive, validated, or appropriate for every future offer.');
+    put();put('Keep the outcome ranges fixed within a comparison round. Revising anchors or circumstances requires revisiting weights and calibration. A numerical index must not override separately recorded hard conditions, interactions, or unresolved material facts.');
+    put();put('## Revision record');
+    if(!s.history.length)put('Initial version.');
+    s.history.forEach(h=>put(`Revision ${h.revision} (${h.snapshotId||'draft'}) archived ${h.archivedAt}. Reason for new revision: ${h.reason}`));
+    put();put('## About this export');put(includePrivate?'Private structured context is included.':'Salary, commute, current-arrangement, personal-financial-goal, personal-budget, and disruption-horizon fields are omitted. Free text, the title, and outcome definitions are not automatically redacted. Review before sharing.');
+    put('Created with Contract Policy Modeler '+VERSION+', an independent tool made by one SPEEA-represented Boeing engineer. Not affiliated with SPEEA or The Boeing Company. No contract terms are built into the application.');
+    return lines.join('\n');
+  }
+  function sanitize(raw) {
+    if(!raw||typeof raw!=='object'||!['contract-policy-modeler','defret'].includes(raw.app)||raw.schemaVersion!==1)throw new Error('This is not a supported Contract Policy Modeler profile (schema version 1).');
+    const s=blank(),text=(x,max=12000)=>typeof x==='string'?x.slice(0,max):'';
+    const int=(x,min,max,def)=>Number.isInteger(x)&&x>=min&&x<=max?x:def;
+    s.createdAt=text(raw.createdAt,80)||s.createdAt;s.revision=int(raw.revision,1,10000,1);
+    for(const k of FRAME_KEYS)s.frame[k]=text(raw.frame?.[k]);for(const k of RULE_KEYS)s.rules[k]=text(raw.rules?.[k]);
+    s.method=['weights','rank'].includes(raw.method)?raw.method:'';
+    if(!Array.isArray(raw.criteria)||raw.criteria.length>16)throw new Error('Profile must contain no more than 16 outcome definitions.');
+    const ids=new Set();s.criteria=raw.criteria.map(c=>{
+      if(!c||typeof c!=='object'||!/^[-a-zA-Z0-9_]{1,40}$/.test(c.id)||ids.has(c.id))throw new Error('Profile contains invalid or duplicate outcome IDs.');ids.add(c.id);
+      return {id:c.id,name:text(c.name,140),help:text(c.help,1200),mode:['dial','context','exclude'].includes(c.mode)?c.mode:'undecided',lower:text(c.lower),middle:text(c.middle),upper:text(c.upper),sufficient:text(c.sufficient),hard:text(c.hard),weight:typeof c.weight==='number'&&Number.isFinite(c.weight)&&c.weight>=0&&c.weight<=100?c.weight:null,notes:text(c.notes)};
+    });
+    const activeIDs=active(s).map(c=>c.id);s.pairs={};
+    for(const[a,b]of allPairs(s)){const k=pairKey(a.id,b.id),x=raw.pairs?.[k];if([a.id,b.id,'equal','depends','unsure'].includes(x))s.pairs[k]=x;}
+    s.packages=[];let boundarySeen=false;
+    if(Array.isArray(raw.packages))for(const p of raw.packages.slice(0,20)){
+      if(!p||!['below','boundary','above'].includes(p.judgment)||!p.levels||!activeIDs.every(id=>[0,50,100].includes(p.levels[id])))continue;
+      if(p.judgment==='boundary'&&boundarySeen)continue;if(p.judgment==='boundary')boundarySeen=true;
+      s.packages.push({id:text(p.id,80)||hash(p),name:text(p.name,140)||'Untitled bundle',judgment:p.judgment,reason:text(p.reason),levels:Object.fromEntries(activeIDs.map(id=>[id,p.levels[id]]))});
+    }
+    // Archive text is preserved as inert text, never HTML and never recursively loaded as a profile.
+    if(Array.isArray(raw.history))s.history=raw.history.slice(-20).filter(h=>h&&typeof h==='object').map(h=>({revision:int(h.revision,1,10000,1),snapshotId:text(h.snapshotId,80),archivedAt:text(h.archivedAt,80),reason:text(h.reason),policy:text(h.policy,100000)}));
+    if(raw.frozenAt&&typeof raw.frozenAt==='string'&&!Number.isNaN(Date.parse(raw.frozenAt))){s.frozenAt=text(raw.frozenAt,80);s.snapshotId=snapshotId(s);}
+    return s;
+  }
+  const api={VERSION,DIMENSIONS,FRAME_KEYS,RULE_KEYS,modeLabels,choiceLabels,blank,active,normalized,weightReady,packageScore,pairKey,allPairs,pairProblems,calibrationProblems,audit,sensitivity,hash,snapshotId,exportPolicy,sanitize};
+  if(typeof module==='object'&&module.exports)module.exports=api;else root.PolicyModeler=api;
+})(typeof window!=='undefined'?window:globalThis);
+
+</script>
+<script>
+(function(){
+'use strict';
+const M=window.PolicyModeler, KEY='contract-policy-modeler.profile.v1', LEGACY_KEY='defret.profile.v1';
+let state=M.blank(),step=0,pairIndex=0,remember=false,includePrivate=false,saveTimer=null,toastTimer=null,sensitivityPct='';
+let bundleDraft={name:'',reason:'',levels:{},reviewed:false};
+const steps=['Set the frame','Define outcomes','Set priorities','Check tradeoffs','Write the rules','Save your policy'];
+const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const short=(x,n=150)=>x.length>n?x.slice(0,n-1)+'…':x;
+const $=sel=>document.querySelector(sel);
+const money=x=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:2}).format(x);
+const palette=['#3577c4','#8fc1f0','#c4dcf3','#1d3f6e','#a9bdd6','#7e97b3','#d7c499','#a7987c','#b5c3d4','#8d97a8','#c8d5e3','#6f9dd1','#baa990','#9aa8bc','#4c6a8f','#cbd6e5'];
+function toast(text){clearTimeout(toastTimer);$('#toast').textContent=text;$('#toast').classList.add('visible');toastTimer=setTimeout(()=>$('#toast').classList.remove('visible'),4500);}
+function field(label,value,{kind='textarea',attrs='',help='',placeholder='',optional=false,rows=3}={}){
+  const id='f-'+M.hash(attrs||label);const element=kind==='textarea'?`<textarea id="${id}" rows="${rows}" maxlength="12000" placeholder="${esc(placeholder)}" ${attrs}>${esc(value)}</textarea>`:`<input id="${id}" type="${kind}" value="${esc(value)}" maxlength="12000" placeholder="${esc(placeholder)}" ${attrs}>`;
+  return `<label class="field" for="${id}"><span class="field-label">${esc(label)}${optional?'<span class="optional">optional</span>':''}</span>${help?`<span class="field-help">${esc(help)}</span>`:''}${element}</label>`;
+}
+const ff=(key,label,opts={})=>field(label,state.frame[key],{...opts,attrs:`data-frame="${key}"`});
+const rf=(key,label,opts={})=>field(label,state.rules[key],{...opts,attrs:`data-rule="${key}"`});
+const cf=(c,key,label,opts={})=>field(label,c[key],{...opts,attrs:`data-cid="${c.id}" data-prop="${key}"`});
+function note(title,body){return `<div class="hero-note"><span class="note-mark" aria-hidden="true">↗</span><div><strong>${title}</strong><p>${body}</p></div></div>`;}
+function heading(kicker,title,lead){return `<div class="page-kicker">${kicker}</div><h1>${title}</h1><p class="lead">${lead}</p>`;}
+function empty(text,go,label){return `<div class="empty">${text}${go!==undefined?`<div style="margin-top:13px"><button class="button small" data-go="${go}">${label||'Go back'}</button></div>`:''}</div>`;}
+function persist(){
+  clearTimeout(saveTimer);saveTimer=setTimeout(()=>{
+    if(remember){try{localStorage.setItem(KEY,JSON.stringify(state));$('#save-status').textContent='Saved in this browser · export JSON for a portable backup';}catch(e){$('#save-status').textContent='Browser save failed · export JSON to keep your work';toast('Browser storage is unavailable or full. Export JSON to keep your work.');}}
+  },220);
+}
+function updated(){persist();updateStatus();}
+function updateStatus(){
+  const issues=M.audit(state),c=M.active(state);$('#revision').textContent=`${state.frozenAt?'FROZEN SNAPSHOT':'WORKING DRAFT'} · REVISION ${state.revision}`;
+  $('#completion').textContent=`Step ${step+1} / 6 · ${issues.length?issues.length+' review items':'initial checks complete'}`;
+  $('#progress-bar').style.width=((step+1)/6*100)+'%';
+  if(!remember)$('#save-status').textContent='Session only · export JSON to keep your work';
+  $('#remember-toggle').checked=remember;
+  const pc=$('#pay-context');if(pc){const n=Number(state.frame.salary.replace(/[$,\s]/g,''));pc.textContent=state.frame.salary.trim()&&Number.isFinite(n)&&n>0?`For perspective only: 1% of this salary is ${money(n/100)} per year before tax. This is not a suggested tradeoff.`:'Your exact salary is optional. Nothing here requires revealing your savings, medical history, or identity.';}
+  if(step===2)updateWeightDisplay();
+}
+function invalidateCalibration(){
+  if(state.packages.length||Object.keys(state.pairs).length)toast('Outcome definitions changed. Previous comparisons and package calibration have been cleared for rechecking.');
+  state.pairs={};state.packages=[];bundleDraft={name:'',reason:'',levels:{},reviewed:false};pairIndex=0;
+}
+function render(focus=false){
+  $('#steps').innerHTML=steps.map((name,i)=>`<button class="step-link ${step===i?'active':''}" data-go="${i}" ${step===i?'aria-current="step"':''}><span class="step-index">0${i+1}</span>${name}</button>`).join('');
+  let html=state.frozenAt?`<div class="frozen-banner"><span><strong>Revision ${state.revision} is frozen.</strong> Export it as your reference. A new revision requires a recorded reason.</span><button class="button small" data-action="revise">Start revision</button></div>`:'';
+  html+=[renderFrame,renderOutcomes,renderPriorities,renderChecks,renderRules,renderPolicy][step]();
+  $('#content').innerHTML=html;
+  if(state.frozenAt){$('#content').querySelectorAll('input[data-frame],textarea[data-frame],input[data-rule],textarea[data-rule],select[data-rule],input[data-cid],textarea[data-cid],input[data-weight],input[data-weight-range],input[data-bundle],textarea[data-bundle],select[data-level],input[data-review-bundle]').forEach(e=>e.disabled=true);$('#content').querySelectorAll('[data-mutates]').forEach(e=>e.disabled=true);}
+  $('#back-btn').disabled=step===0;$('#next-btn').style.visibility=step===5?'hidden':'visible';$('#next-btn').textContent=(steps[step+1]||'')+' →';$('#step-count').textContent=`STEP ${step+1} OF 6`;
+  updateStatus();if(focus){$('#content').focus({preventScroll:true});window.scrollTo({top:0,behavior:'instant'});}
+}
+function renderFrame(){return heading('01 / BEGIN WITH YOUR LIFE','Decide what “enough” means.','Write the policy before the tentative agreement is published. This is a place to define what a contract worth voting for would give you, which is a different goal from maximizing every provision.')+
+  note('An independent tool. A personal policy.','Made by one SPEEA-represented Boeing engineer, not by SPEEA or Boeing. Everyone starts blank. Your income, financial runway, priorities, and tradeoffs stay yours. Share the link with coworkers, never a completed profile.')+
+  `<section class="card"><div class="card-header"><h2>What are you trying to protect or improve?</h2><span class="tag subtle">YOUR FRAME</span></div>`+
+  ff('title','Policy title',{kind:'text',optional:true,placeholder:'A name that makes sense to you. No real name required'})+
+  ff('purpose','A contract worth voting for should give me…',{placeholder:'Describe the life and career this contract should support. What would make you comfortable voting yes?',rows:4})+
+  `<div class="grid2">`+ff('horizon','Comparison horizon',{kind:'text',placeholder:'A defined number of years, or a period ending on a specified date',help:'Use the same horizon when comparing offers of different lengths.'})+
+  ff('reference','Baseline and reference date',{placeholder:'What current terms and dated reference points will the offer be compared against?',help:'Avoid silently letting the latest offer redefine your starting point.'})+`</div></section>`+
+  `<section class="card"><div class="card-header"><h2>Your circumstances</h2><span class="tag subtle">OPTIONAL · PRIVATE FIELDS</span></div><p class="small-copy muted">These inform your thinking. They do not automatically determine your priorities or how much risk you should take.</p><div class="grid2">`+
+  ff('salary','Current annual base salary',{kind:'text',optional:true,placeholder:'Enter an amount only if useful to you'})+
+  ff('commute','Typical round-trip commute',{kind:'text',optional:true,placeholder:'Time, cost, and variability'})+
+  ff('arrangement','Current work arrangement',{optional:true,placeholder:'Schedule, location, flexibility, and what is discretionary'})+
+  ff('financialGoal','What financial progress would mean for me',{optional:true,placeholder:'Describe an outcome rather than disclosing your full finances'})+
+  `</div><div class="callout" id="pay-context"></div></section><p class="micro">No current salary, market reference, desired raise, or existing contract has been preloaded. Optional private fields are omitted from policy-text exports unless you explicitly include them. Free text is never automatically redacted.</p>`;
+}
+function renderOutcomes(){return heading('02 / DEFINE THE IMPROVEMENTS','Give each dial a meaning.','Choose the outcomes that matter to you. For each included dial, describe a lower outcome, an upper outcome, and an outcome halfway between them in value to you.')+
+ note('A comparison range is not a list of demands.','“Upper” is the end of the improvement you want to compare. It is not a minimum requirement. Use realistic, concrete descriptions on the same timeline. You can define a sufficient outcome or a genuine hard condition separately.')+
+ `<p class="small-copy muted">These eight topics are starting prompts, not mandatory values. Rename them, exclude them, or add your own. Purpose, history, financial runway, and the cost of further bargaining belong in the frame and rules, not automatically in the weighted total.</p>`+
+ state.criteria.map(c=>`<details class="accordion" data-detail="${c.id}"><summary><span class="accordion-title"><strong>${esc(c.name||'Untitled outcome')}</strong><small>${esc(M.modeLabels[c.mode])}${c.mode==='dial'?' · '+[c.lower,c.middle,c.upper].filter(x=>x.trim()).length+'/3 anchors defined':''}</small></span><span class="tag ${c.mode==='undecided'?'warn':'subtle'}">${c.mode==='dial'?'DIAL':c.mode==='context'?'CONTEXT':c.mode==='exclude'?'EXCLUDED':'CHOOSE'}</span></summary><div class="accordion-body"><p class="small-copy muted">${esc(c.help)}</p><div class="mode-picker" aria-label="Treatment of ${esc(c.name)}">${[['dial','Include as a dial'],['context','Context only'],['exclude','Exclude']].map(([mode,label])=>`<button class="pill ${c.mode===mode?'selected':''}" data-action="mode" data-id="${c.id}" data-value="${mode}" data-mutates aria-pressed="${c.mode===mode}">${label}</button>`).join('')}</div>`+
+ (c.mode==='dial'?cf(c,'name','Outcome name',{kind:'text'})+`<div class="grid3">`+
+ cf(c,'lower','0 · Lower-value outcome',{placeholder:'A specific less-preferred state. Not necessarily an automatic rejection',help:'Your lower comparison anchor.'})+
+ cf(c,'middle','50 · Halfway in personal value',{placeholder:'A state that provides about half the value of the full improvement',help:'Not necessarily the numerical midpoint. Include reliability where relevant.'})+
+ cf(c,'upper','100 · Upper-value outcome',{placeholder:'The more-preferred end of the specific improvement you are comparing',help:'Not a claim that you must obtain this outcome.'})+`</div><div class="grid2">`+
+ cf(c,'sufficient','What would be sufficient here?',{optional:true,placeholder:'A soft target you could trade against other improvements'})+
+ cf(c,'notes','Measurement and mapping notes',{optional:true,placeholder:'Units, dates, guaranteed versus contingent benefits, and how to avoid double counting'})+
+ `</div><div class="hard-box">`+cf(c,'hard','A non-tradeable condition, if one really exists',{optional:true,placeholder:'Leave blank unless no realistically available improvement elsewhere would offset its absence.',help:'This is a separate condition, not a large weight. The prototype records it but does not evaluate it.'})+`</div>`:
+ c.mode==='context'?`<div class="callout">This topic will be noted but will not receive a weight. Write its practical effect in the rules step.</div>`:
+ c.mode==='exclude'?`<p class="micro">The policy will record that you considered this topic and excluded it.</p>`:'')+
+ `</div></details>`).join('')+
+ `<button class="button" data-action="add-outcome" data-mutates ${state.criteria.length>=16?'disabled':''}>+ Add another outcome</button><p class="micro" style="margin-top:13px">Overlapping outcomes need review. For example, count the same commute-time saving only once. A right’s reliability can be built into the outcome instead of being awarded a second generic “trust” bonus.</p>`;
+}
+function renderPriorities(){const cs=M.active(state);return heading('03 / PRIORITIZE DEFINED IMPROVEMENTS','What matters, and by how much?','Rank full improvements, or express their relative value using weights. Nothing is assigned a default share. The percentages are calculated from your inputs.')+
+ `<div class="method-buttons">${[['weights','Relative swing weights','Compare the size of the improvements. Enables provisional whole-package calibration.'],['rank','Ordering only','Put the improvements in order. Does not invent cardinal weights or a numerical threshold.']].map(([id,title,help])=>`<button class="method-button ${state.method===id?'selected':''}" data-action="method" data-value="${id}" data-mutates aria-pressed="${state.method===id}"><strong>${title}</strong><small>${help}</small></button>`).join('')}</div>`+
+ (cs.length?`<section class="card"><h2>${state.method==='rank'?'Order the full improvements':'Compare each complete improvement'}</h2><p class="small-copy muted">${state.method==='rank'?'Use the arrows to place the full improvements in your preferred order. This is not yet a rule for how much pay compensates for a change in working conditions.':'Give the most valuable 0 → 100 improvement 100 points if useful. An improvement worth half as much gets 50. Any consistent relative scale works. The total is normalized automatically. Zero means no additive value for that improvement.'}</p>`+
+ cs.map((c,i)=>`<div class="priority-row"><div class="reorder"><button data-action="reorder" data-id="${c.id}" data-dir="-1" data-mutates ${i===0?'disabled':''} aria-label="Move ${esc(c.name)} up">↑</button><span>${i+1}</span><button data-action="reorder" data-id="${c.id}" data-dir="1" data-mutates ${i===cs.length-1?'disabled':''} aria-label="Move ${esc(c.name)} down">↓</button></div><div><div class="weight-name">${esc(c.name)}</div><div class="swing-line"><strong>From:</strong> ${esc(short(c.lower||'[Define the lower outcome first]'))}<br><strong>To:</strong> ${esc(short(c.upper||'[Define the upper outcome first]'))}</div></div>`+
+ (state.method==='weights'?`<div class="weight-controls"><input type="range" min="0" max="100" step="1" value="${c.weight??0}" data-weight-range="${c.id}" aria-label="Relative swing points for ${esc(c.name)}"><input type="number" min="0" max="100" step="1" value="${c.weight??''}" placeholder="—" data-weight="${c.id}" aria-label="Relative swing points, number, for ${esc(c.name)}"><div class="weight-percent" id="weight-${c.id}">Not set</div></div>`:'')+`</div>`).join('')+
+ (state.method==='weights'?`<div class="divider"></div><div id="weight-viz"></div><p class="micro">A weight only means something relative to its comparison range. New weights rerun the comparison checks. New outcome anchors clear old calibration rather than silently reusing it.</p>`:'')+
+ `</section>`:empty('Choose the outcomes to include before prioritizing them.',1,'Define outcomes'))+
+ `<div class="callout">A 40% weight on pay does not mean that 40% of your life, the contract, or your vote is about money. It means that 40% of the additive comparison range is assigned to the particular pay improvement you defined.</div>`;
+}
+function updateWeightDisplay(){const cs=M.active(state),w=M.normalized(state),ready=M.weightReady(state);for(const c of cs){const x=$('#weight-'+c.id);if(x)x.textContent=c.weight===null?'Not set':w[c.id].toFixed(1)+'% normalized'+(ready?'':' · partial');}
+ const v=$('#weight-viz');if(!v)return;
+ v.innerHTML=`<span class="eyebrow">${ready?'YOUR RELATIVE SWING WEIGHTS':'PARTIAL ALLOCATION · COMPLETE ALL INCLUDED DIALS'}</span><div class="weight-bar" role="img" aria-label="${esc(cs.map(c=>`${c.name}: ${w[c.id].toFixed(1)} percent`).join(', '))}">${cs.map((c,i)=>`<div class="weight-segment" style="width:${w[c.id]}%;background:${palette[i%palette.length]}"></div>`).join('')}</div><div class="weight-legend">${cs.map((c,i)=>`<span><span class="legend-dot" style="background:${palette[i%palette.length]}"></span>${esc(c.name)} ${c.weight===null?'unset':w[c.id].toFixed(1)+'%'}</span>`).join('')}</div>`;
+}
+function pairSection(){const pairs=M.allPairs(state);if(!pairs.length)return empty('Two or more included outcomes allow a cross-category comparison. One included outcome does not need a pairwise check.');
+ pairIndex=Math.max(0,Math.min(pairIndex,pairs.length-1));const [a,b]=pairs[pairIndex],key=M.pairKey(a.id,b.id),answer=state.pairs[key];
+ return `<section class="card"><div class="card-header"><div><h2>Check a full-improvement tradeoff</h2><p class="small-copy muted">Imagine everything else stays at its lower anchor and all hard conditions are satisfied. Which single improvement matters more?</p></div><span class="number-badge">${pairIndex+1} / ${pairs.length}</span></div><div class="grid2">${[a,b].map((c,i)=>`<div class="choice-card"><div class="upper-title">${i===0?'A':'B'} · ${esc(c.name)}</div><p><strong>From</strong><br>${esc(c.lower||'[Lower anchor not defined]')}</p><p><strong>To</strong><br>${esc(c.upper||'[Upper anchor not defined]')}</p></div>`).join('')}</div><div class="choice-buttons">${[[a.id,'A matters more'],[b.id,'B matters more'],['equal','Equal value'],['depends','Depends on the package'],['unsure','Not sure yet']].map(([v,label])=>`<button class="button small ${answer===v?'selected':''}" data-action="pair" data-key="${key}" data-value="${v}" data-mutates aria-pressed="${answer===v}">${label}</button>`).join('')}</div><div class="inline-nav"><button class="button small quiet" data-action="prev-pair" ${pairIndex===0?'disabled':''}>← Previous pair</button><span class="micro">${Object.keys(state.pairs).length} responses recorded</span><button class="button small" data-action="next-pair" ${pairIndex===pairs.length-1?'disabled':''}>Next pair →</button></div><p class="micro" style="margin-top:15px">“Depends” is useful information, not a wrong answer. It means the simple additive model may be too restrictive. This prototype never silently changes your weights to fit an answer.</p></section>`;
+}
+function renderChecks(){const cs=M.active(state),problems=[...M.pairProblems(state),...M.calibrationProblems(state)];return heading('04 / TEST YOUR OWN MODEL','Tradeoffs, not a magic score.','Use hypothetical bundles before the real offer arrives. Your judgments come first. The numerical model is checked against them.')+
+ (!state.method?empty('Choose a priority method first.',2,'Set priorities'):pairSection())+
+ (problems.length?`<section class="card"><h3>Items to reconcile</h3>${problems.map(p=>`<div class="audit-item"><span class="audit-dot"></span><span>${esc(p.text)}</span></div>`).join('')}</section>`:'')+
+ (state.method==='weights'?(M.weightReady(state)&&cs.every(c=>c.lower&&c.middle&&c.upper)?`<section class="card"><h2>Build a hypothetical whole package</h2><p class="small-copy muted">Select one of your explicit outcomes in every included dimension. Label the bundle based on your own judgment before seeing its model index. Unsaved bundle selections are not part of a JSON backup until you record a judgment.</p>`+
+ field('Bundle name',bundleDraft.name,{kind:'text',attrs:'data-bundle="name"',placeholder:'A memorable label for this hypothetical'})+
+ cs.map(c=>`<div class="outcome-select"><label for="level-${c.id}">${esc(c.name)}</label><div><select id="level-${c.id}" data-level="${c.id}"><option value="">Choose an outcome…</option>${[[0,'lower','Lower · 0'],[50,'middle','Halfway in value · 50'],[100,'upper','Upper · 100']].map(([v,k,label])=>`<option value="${v}" ${bundleDraft.levels[c.id]===v?'selected':''}>${label} — ${esc(short(c[k],140))}</option>`).join('')}</select><div class="level-preview" id="preview-${c.id}">${esc(c[{0:'lower',50:'middle',100:'upper'}[bundleDraft.levels[c.id]]]||'')}</div></div></div>`).join('')+
+ `<div style="margin-top:20px">`+field('Why does this bundle feel that way?',bundleDraft.reason,{attrs:'data-bundle="reason"',optional:true,placeholder:'The tradeoffs or unresolved concerns behind your judgment'})+`</div><label class="checkbox-row"><input type="checkbox" data-review-bundle ${bundleDraft.reviewed?'checked':''}><span>This hypothetical satisfies any separate hard conditions and does not trigger a special interaction rule. <small>Do not use a bundle that violates a veto to calibrate an additive threshold.</small></span></label><div class="action-row"><button class="button" data-action="save-bundle" data-judgment="below" data-mutates>Not acceptable to me</button><button class="button primary" data-action="save-bundle" data-judgment="boundary" data-mutates>Just acceptable to me</button><button class="button" data-action="save-bundle" data-judgment="above" data-mutates>Comfortably acceptable</button></div><p class="micro" style="margin-top:14px">No preset passing score. “Just acceptable” records your personal boundary. Only one current boundary bundle is kept. Save other bundles to check it.</p></section>`:empty('Complete all included anchors and relative weights to build hypothetical packages.',1,'Review outcome definitions')):'')+
+ (state.packages.length&&state.method==='weights'?renderBundles():'')+
+ (state.method==='rank'?note('Ordering is useful, but it is not a voting algorithm.','A first priority can outweigh another by a little or by a lot. The rules step lets you explain how your order should guide an overall decision. No percentages or acceptance threshold are inferred.'):'');
+}
+function renderBundles(){return `<section class="card"><h2>Your recorded hypothetical judgments</h2><p class="small-copy muted">These labels are yours. The index shows what your current additive assumptions imply. It is not an independent assessment of any contract.</p>`+state.packages.map(p=>{const score=M.packageScore(state,p);return `<div class="bundle-card"><div class="card-header"><div><strong>${esc(p.name)}</strong><div class="meta">Your judgment: ${ {below:'not acceptable',boundary:'just acceptable',above:'comfortably acceptable'}[p.judgment]}</div></div><div><span class="bundle-index">${score===null?'—':score.toFixed(2)}</span><span class="micro"> / 100 index</span></div></div><details style="margin-top:9px"><summary class="micro">Show the outcomes and your reason</summary><div style="padding-top:10px">${M.active(state).map(c=>`<p class="micro"><strong>${esc(c.name)}:</strong> ${esc(c[{0:'lower',50:'middle',100:'upper'}[p.levels[c.id]]]||'')}</p>`).join('')}<p class="micro">${esc(p.reason)}</p></div></details><div class="action-row" style="margin-top:9px"><button class="button small quiet" data-action="load-bundle" data-id="${esc(p.id)}" data-mutates>Use as starting point</button><button class="button small quiet" data-action="remove-bundle" data-id="${esc(p.id)}" data-mutates>Remove</button></div></div>`;}).join('')+
+ `<details style="margin-top:21px"><summary class="small-copy">Optional: a local weight-sensitivity check</summary><p class="micro" style="margin-top:13px">Choose a percentage by which to increase and decrease each weight, one at a time. The same recorded boundary bundle is rescored for each change. This checks only your recorded hypotheticals, never real offers, and does not explore joint changes, inflation, interpretation uncertainty, or out-of-range outcomes.</p><div class="action-row"><label class="field" style="margin:0;max-width:200px"><span class="field-label">Relative perturbation (%)</span><input type="number" min="1" max="90" step="1" id="sensitivity-pct" value="${esc(sensitivityPct)}" placeholder="Choose an amount"></label><button class="button small" data-action="sensitivity">Run local check</button></div><div id="sensitivity-results"></div></details></section>`;}
+function renderRules(){return heading('05 / MAKE THE EXCEPTIONS EXPLICIT','Rules for the things a sum misses.','Record how you will handle evidence, combinations of concessions, other employees, and the risks of further bargaining. These rules are kept in your own words and are never converted into weights.')+
+ `<section class="card"><h2>Evidence and uncertainty</h2><div class="grid2">`+
+ rf('evidence','What evidence is enough to credit a provision?',{placeholder:'State what must be verified, and distinguish a right, a discretionary practice, and an unenforceable promise.'})+
+ rf('variablePay','How will you count contingent compensation?',{placeholder:'State how guaranteed increases, selective raises, bonuses, and promotions will be kept distinct.'})+
+ rf('uncertainty','How will you handle unknown or ambiguous facts?',{placeholder:'Record when to ask for clarification, compare supported interpretations, or leave a point unresolved. Unknown is not automatically zero.'})+
+ rf('scenarios','Which economic or other assumptions will you test?',{optional:true,placeholder:'Name scenarios and their time horizon. Do not treat an assumption as a forecast.'})+`</div></section>`+
+ `<section class="card"><h2>Combinations, history, and other people</h2>`+
+ rf('interactions','Which combinations need a separate rule?',{placeholder:'A pair of individually tolerable concessions may be unacceptable together. Or state that no such interaction has been identified.'})+
+ `<div class="grid2">`+rf('history','How does prior experience affect your standard?',{placeholder:'What future protection, financial correction, or acknowledgment would address it? Or state that it is not separately counted.'})+
+ rf('coworkers','How do other employees’ interests enter your policy?',{placeholder:'Record the specific outcomes or tradeoffs you care about. Avoid assuming others’ preferences from their income or age.'})+`</div>`+
+ `<label class="field"><span class="field-label">Overlap and dependency review</span><span class="field-help">Is one benefit being counted twice? Does the value of an outcome change substantially depending on another outcome? Reviewing this does not prove independence.</span><select data-rule="independence"><option value="">Choose a status…</option><option value="reviewed" ${state.rules.independence==='reviewed'?'selected':''}>Reviewed. Any limitations are recorded above</option><option value="unresolved" ${state.rules.independence==='unresolved'?'selected':''}>Unresolved. Additive results remain provisional</option></select></label></section>`+
+ `<section class="card"><h2>Further-bargaining risk is a separate question</h2><p class="small-copy muted">An acceptable package and a worthwhile risk are not identical concepts. Financial capacity does not automatically say how much risk you want to bear. This app does not forecast a strike or a subsequent offer.</p>`+
+ rf('rejection','How will further-bargaining costs and uncertainty affect the decision?',{placeholder:'State the role of prospective costs, household constraints, and uncertain future terms. Distinguish ability to take risk from willingness.'})+
+ `<div class="grid2">`+rf('budget','Personal maximum additional cost',{kind:'text',optional:true,placeholder:'A private planning amount or range'})+
+ rf('weeks','Personal disruption horizon',{kind:'text',optional:true,placeholder:'A private time range, if helpful'})+`</div><p class="micro">The two optional fields above are omitted from policy-text exports unless private context is explicitly included. They are included in JSON profiles.</p></section>`+
+ `<section class="card"><h2>Close the loop</h2><div class="grid2">`+
+ rf('closeCall','What will you do in a close case?',{placeholder:'Choose a procedure for unresolved issues and the deadline. Do not leave the tie rule to your mood on decision day.'})+
+ rf('refresh','When may inputs or policy assumptions change?',{placeholder:'Name material changes that justify a new version. Define how to update salary references, dates, or household constraints.'})+
+ rf('stop','When will you stop reconsidering?',{placeholder:'Describe the fact checks and reviews you require, and what new information would legitimately reopen the decision.'})+
+ rf('scope','How should the complete policy be applied?',{placeholder:'For example, the sequence for reviewing hard conditions, factual uncertainty, interactions, and the overall tradeoff. This is especially important for ordering-only policies.',optional:state.method!=='rank'})+`</div></section>`;
+}
+function renderPolicy(){const issues=M.audit(state),weights=M.normalized(state);return heading('06 / A RECORD YOU CAN REUSE','Your policy, in your own terms.','Keep a dated snapshot before the tentative agreement is published. This document records what you chose, what remains unresolved, and what would justify revisiting the policy.')+
+ `<div class="status-card ${issues.length?'warn':''}"><h2>${issues.length?`${issues.length} items still need review`:'Initial checks complete'}</h2><p>${issues.length?'You can export a draft now or freeze it with its unresolved items preserved. A frozen version is not a certification of completeness.':'Required fields and the prototype’s limited checks are complete. This is not proof of universal consistency, exhaustive coverage, or a correct future decision.'}</p></div>`+
+ (issues.length?`<details class="card"><summary class="small-copy"><strong>Open the review checklist</strong></summary><div style="margin-top:12px">${issues.map(x=>`<div class="audit-item"><span class="audit-dot"></span><span>${esc(x.text)}</span><button class="text-link" data-go="${x.step}">Review</button></div>`).join('')}</div></details>`:'')+
+ `<section class="card"><div class="card-header"><div><h2>Portable, versioned, readable</h2><p class="small-copy muted">Download Markdown or text, print the policy, or retain the full JSON profile for later editing.</p></div><span class="tag subtle">REV ${state.revision}</span></div><label class="checkbox-row"><input type="checkbox" id="include-private" ${includePrivate?'checked':''}><span>Include optional private context in the policy text <small>Unchecked omits the structured salary, commute, current arrangement, financial goal, risk-budget, and disruption-horizon fields. Review all free text before sharing.</small></span></label><div class="action-row"><button class="button primary" data-action="export-md">Export policy .md</button><button class="button" data-action="export-txt">Export policy .txt</button><button class="button" data-action="copy">Copy text</button><button class="button" data-action="print">Print policy</button></div><div class="divider"></div><pre class="policy-preview" id="policy-preview">${esc(M.exportPolicy(state,includePrivate))}</pre></section>`+
+ `<section class="card"><h2>${state.frozenAt?'Preserve this version':'Freeze a reference version'}</h2><p class="small-copy muted">${state.frozenAt?'Editing requires a new revision and a reason. The prior policy text is archived in your profile.':'Freezing prevents accidental edits in this interface. To change a frozen policy, record a reason and start a new revision. Nothing is tamper-proof. The snapshot marker is not a signature.'}</p><div class="action-row"><button class="button primary" data-action="${state.frozenAt?'revise':'freeze'}">${state.frozenAt?'Start a new revision':'Freeze this version'}</button><button class="button" data-action="export-json">Export full profile JSON</button></div></section>`+
+ `<div class="callout">This is the policy-building half of the workflow. Applying it to the real tentative agreement still needs an evidence table, explicit mapping from contract articles to outcomes, and human review of legal language, hard conditions, and interactions. No real contract has been scored here.</div>`;
+}
+function download(name,text,type){const blob=new Blob([text],{type}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);}
+function exportJSON(){if(!confirm('This JSON includes your complete profile, optional private context, and archived revisions. Keep it private unless you have reviewed it. Export now?'))return;download(`contract-policy-profile-r${state.revision}.json`,JSON.stringify(state,null,2),'application/json;charset=utf-8');toast('Profile exported. Keep the JSON private.');}
+function freeze(){
+ const open=M.audit(state).length;if(!confirm(`Freeze revision ${state.revision}${open?' with '+open+' unresolved review items':''}? You can revise it later, but must record a reason. Export JSON afterward to preserve it outside this browser.`))return;
+ state.frozenAt=new Date().toISOString();state.snapshotId=M.snapshotId(state);updated();render();toast('Version frozen. Export JSON to retain the full snapshot.');
+}
+function revise(){
+ const reason=prompt('What new information or deliberate change justifies this revision? The previous policy text will be preserved.');if(reason===null)return;if(!reason.trim()){toast('Please record a reason before starting a new revision.');return;}
+ state.history.push({revision:state.revision,snapshotId:state.snapshotId||'',archivedAt:new Date().toISOString(),reason:reason.trim().slice(0,12000),policy:M.exportPolicy(state,true)});
+ if(state.history.length>20){state.history=state.history.slice(-20);toast('Only the most recent 20 archived policy texts are retained in this profile. Keep older exported profiles separately.');}
+ state.revision++;state.frozenAt=null;state.snapshotId=null;updated();render();toast('A new revision is open. Prior policy text is preserved in JSON.');
+}
+function navigate(n){step=Math.max(0,Math.min(5,n));render(true);}
+function mutateGuard(){if(!state.frozenAt)return true;toast('Start a new revision before editing this frozen policy.');return false;}
+// Text inputs update the model without rebuilding the active field or moving the caret.
+document.addEventListener('input',e=>{
+ const t=e.target;
+ if(t.matches('[data-frame]')){if(!mutateGuard())return;state.frame[t.dataset.frame]=t.value;updated();}
+ else if(t.matches('[data-rule]')){if(!mutateGuard())return;state.rules[t.dataset.rule]=t.value;updated();}
+ else if(t.matches('[data-cid][data-prop]')){if(!mutateGuard())return;const c=state.criteria.find(c=>c.id===t.dataset.cid),key=t.dataset.prop;if(!c)return;
+   if(['lower','middle','upper','hard'].includes(key)&&c[key]!==t.value)invalidateCalibration();c[key]=t.value;updated();
+   const summary=t.closest('details')?.querySelector('summary');if(summary){summary.querySelector('.accordion-title strong').textContent=c.name||'Untitled outcome';summary.querySelector('.accordion-title small').textContent=M.modeLabels[c.mode]+` · ${[c.lower,c.middle,c.upper].filter(x=>x.trim()).length}/3 anchors defined`;}
+ }
+ else if(t.matches('[data-weight],[data-weight-range]')){if(!mutateGuard())return;const id=t.dataset.weight||t.dataset.weightRange,c=state.criteria.find(c=>c.id===id);if(!c)return;const n=t.value===''?null:Number(t.value);c.weight=n===null||!Number.isFinite(n)?null:Math.min(100,Math.max(0,n));
+   const number=$(`[data-weight="${id}"]`),range=$(`[data-weight-range="${id}"]`);if(number&&(number!==t||(c.weight!==null&&Number(t.value)!==c.weight)))number.value=c.weight??'';if(range&&range!==t)range.value=c.weight??0;updated();
+ }
+ else if(t.matches('[data-bundle]')){if(!mutateGuard())return;bundleDraft[t.dataset.bundle]=t.value;}
+ else if(t.id==='sensitivity-pct')sensitivityPct=t.value;
+});
+document.addEventListener('change',e=>{
+ const t=e.target;
+ if(t.matches('[data-rule]')){if(!mutateGuard())return;state.rules[t.dataset.rule]=t.value;updated();}
+ if(t.matches('[data-level]')){if(!mutateGuard())return;const c=state.criteria.find(c=>c.id===t.dataset.level),n=t.value===''?undefined:Number(t.value);bundleDraft.levels[c.id]=n;$('#preview-'+c.id).textContent=c[{0:'lower',50:'middle',100:'upper'}[n]]||'';}
+ if(t.matches('[data-review-bundle]'))bundleDraft.reviewed=t.checked;
+ if(t.id==='include-private'){includePrivate=t.checked;$('#policy-preview').textContent=M.exportPolicy(state,includePrivate);}
+ if(t.id==='remember-toggle'){
+   remember=t.checked;if(remember){persist();toast('Browser saving enabled. Export JSON for a portable backup.');}else{try{localStorage.removeItem(KEY);}catch(e){}toast('Browser save erased. Current-session work remains available.');}updateStatus();
+ }
+});
+document.addEventListener('click',async e=>{
+ const t=e.target.closest('button,[data-go]');if(!t)return;
+ if(t.dataset.go!==undefined){navigate(Number(t.dataset.go));return;}
+ if(t.hasAttribute('data-close')){t.closest('dialog').close();return;}
+ const action=t.dataset.action;if(!action)return;
+ if(t.hasAttribute('data-mutates')&&!mutateGuard())return;
+ if(action==='mode'){
+   const c=state.criteria.find(c=>c.id===t.dataset.id);if(c.mode===t.dataset.value)return;
+   if(c.mode==='dial'||t.dataset.value==='dial')invalidateCalibration();c.mode=t.dataset.value;updated();render();$(`[data-detail="${c.id}"]`).open=true;
+ }else if(action==='method'){
+   state.method=t.dataset.value;updated();render();
+ }else if(action==='add-outcome'){
+   if(state.criteria.length>=16)return;const id='custom-'+Date.now().toString(36);state.criteria.push({id,name:'Additional outcome',help:'Define an outcome that is not already counted elsewhere.',mode:'undecided',lower:'',middle:'',upper:'',sufficient:'',hard:'',notes:'',weight:null});updated();render();const d=$(`[data-detail="${id}"]`);d.open=true;d.scrollIntoView({block:'center'});
+ }else if(action==='reorder'){
+   const cs=M.active(state),i=cs.findIndex(c=>c.id===t.dataset.id),j=i+Number(t.dataset.dir);if(j<0||j>=cs.length)return;
+   const a=state.criteria.indexOf(cs[i]),b=state.criteria.indexOf(cs[j]);[state.criteria[a],state.criteria[b]]=[state.criteria[b],state.criteria[a]];updated();render();
+ }else if(action==='pair'){
+   state.pairs[t.dataset.key]=t.dataset.value;updated();render();
+ }else if(action==='next-pair'){pairIndex++;render();}
+ else if(action==='prev-pair'){pairIndex--;render();}
+ else if(action==='save-bundle'){
+   const cs=M.active(state);if(cs.some(c=>![0,50,100].includes(bundleDraft.levels[c.id]))){toast('Choose an explicit outcome in every included dimension.');return;}
+   if(!bundleDraft.reviewed){toast('Confirm that separate hard conditions and interaction rules are satisfied before calibrating a numerical boundary.');return;}
+   if(state.packages.length>=20&&t.dataset.judgment!=='boundary'){toast('This prototype supports 20 calibration bundles. Remove one before adding another.');return;}
+   const judgment=t.dataset.judgment;if(judgment==='boundary'&&state.packages.some(p=>p.judgment==='boundary')){
+     if(!confirm('Replace the current just-acceptable boundary bundle? Other test bundles will remain.'))return;
+     state.packages=state.packages.filter(p=>p.judgment!=='boundary');
+   }
+   state.packages.push({id:'p-'+Date.now().toString(36),name:bundleDraft.name.trim()||'Hypothetical '+(state.packages.length+1),reason:bundleDraft.reason.trim(),levels:{...bundleDraft.levels},judgment});
+   bundleDraft={name:'',reason:'',levels:{},reviewed:false};updated();render();toast('Your judgment is recorded. The model index is now visible below.');
+ }else if(action==='remove-bundle'){state.packages=state.packages.filter(p=>p.id!==t.dataset.id);updated();render();}
+ else if(action==='load-bundle'){const p=state.packages.find(p=>p.id===t.dataset.id);bundleDraft={name:p.name+' variation',reason:p.reason,levels:{...p.levels},reviewed:false};render();toast('Loaded a starting point. The saved bundle has not changed.');}
+ else if(action==='sensitivity'){
+   const n=Number(sensitivityPct);if(!Number.isFinite(n)||n<1||n>90){toast('Choose a relative perturbation from 1% to 90%. It is a test setting, not a probability.');return;}
+   const rows=M.sensitivity(state,n),out=$('#sensitivity-results');if(!rows.length){out.innerHTML='<p class="micro">A calibrated boundary and complete weights are needed first.</p>';return;}
+   const crossings=rows.filter(r=>r.crossings).length;
+   out.innerHTML=`<div class="callout ${crossings?'warn':''}">${crossings?`${crossings} local variations changed which side of the recorded boundary at least one test bundle falls on.`:'None of these one-weight-at-a-time variations crossed the recorded boundary for your saved test bundles.'} It says nothing about changing several weights at once.</div><div class="table-wrap"><table class="data-table"><thead><tr><th>Weight changed</th><th>Change</th><th>Rescored boundary</th><th>Bundle crossings</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${esc(r.criterion)}</td><td>${r.direction>0?'+':'−'}${n}%</td><td>${r.boundary.toFixed(2)}</td><td>${r.crossings}</td></tr>`).join('')}</tbody></table></div>`;
+ }else if(action==='export-md'||action==='export-txt'){
+   const ext=action==='export-md'?'md':'txt';download(`contract-voting-policy-r${state.revision}.${ext}`,M.exportPolicy(state,includePrivate),'text/plain;charset=utf-8');toast('Policy exported. Review free text before sharing.');
+ }else if(action==='copy'){
+   try{await navigator.clipboard.writeText(M.exportPolicy(state,includePrivate));toast('Policy copied. Review it before sharing.');}catch(err){toast('Clipboard access is unavailable here. Use Export policy instead.');}
+ }else if(action==='print'){
+   $('#print-output').textContent=M.exportPolicy(state,includePrivate);window.print();
+ }else if(action==='freeze')freeze();else if(action==='revise')revise();else if(action==='export-json')exportJSON();else if(action==='about')$('#about-dialog').showModal();
+});
+$('#home-link').addEventListener('click',e=>{e.preventDefault();navigate(0);});
+$('#back-btn').addEventListener('click',()=>navigate(step-1));$('#next-btn').addEventListener('click',()=>navigate(step+1));
+$('#settings-btn').addEventListener('click',()=>$('#settings-dialog').showModal());$('#about-btn').addEventListener('click',()=>$('#about-dialog').showModal());
+$('#export-btn').addEventListener('click',exportJSON);$('#import-btn').addEventListener('click',()=>$('#file-input').click());
+$('#file-input').addEventListener('change',async e=>{
+ const f=e.target.files[0];if(!f)return;
+ try{
+   if(f.size>5*1024*1024)throw new Error('Profile is larger than the 5 MB import limit.');const raw=JSON.parse(await f.text()),loaded=M.sanitize(raw);
+   if(!confirm('Import will replace your current session. Export your current profile first if you need it. Continue?'))return;
+   state=loaded;step=0;pairIndex=0;bundleDraft={name:'',reason:'',levels:{},reviewed:false};includePrivate=false;updated();render(true);toast('Profile imported. It is not verified or signed. Review imported assumptions.');
+ }catch(err){toast('Import failed: '+err.message);}finally{e.target.value='';}
+});
+$('#reset-btn').addEventListener('click',()=>{
+ if(!confirm('Erase this session and this app’s saved browser profile? This cannot delete exported files and cannot be undone here.'))return;
+ clearTimeout(saveTimer);remember=false;try{localStorage.removeItem(KEY);}catch(e){}state=M.blank();step=0;pairIndex=0;bundleDraft={name:'',reason:'',levels:{},reviewed:false};includePrivate=false;$('#settings-dialog').close();render(true);toast('A fresh, blank profile is ready.');
+});
+window.addEventListener('beforeunload',()=>{if(remember){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}});
+try{const saved=localStorage.getItem(KEY)||localStorage.getItem(LEGACY_KEY);if(saved){state=M.sanitize(JSON.parse(saved));remember=true;try{localStorage.removeItem(LEGACY_KEY);}catch(e){}persist();setTimeout(()=>toast('Your locally saved profile was restored.'),500);}}catch(e){setTimeout(()=>toast('Browser storage is unavailable or unreadable. This session still works. Export JSON to keep your profile.'),500);}
+render();
+})();
+
+</script>
+</body></html>
