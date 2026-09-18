@@ -13,7 +13,7 @@ Open [`defret.html`](defret.html) directly in a browser. There is nothing to bui
 The modeler walks you through six steps:
 
 1. **Set the frame** — describe what a contract worth voting for should give you, your comparison horizon, and the baseline you'll measure offers against.
-2. **Define outcomes** — for each topic that matters (pay, remote work, hours and leave, health benefits, retirement, employment security, coworker outcomes, voice and process), describe a lower, halfway, and upper outcome in your own words.
+2. **Define outcomes** — decide which topics count as tradeable dials (pay, remote work, hours and leave, health benefits, retirement, employment security, coworker outcomes, voice and process, or your own). For each dial, write the low end and high end of a realistic range in your own words, plus the outcome halfway in value to you. Each topic has a made-up example range you can open for reference; nothing is prefilled.
 3. **Set priorities** — express relative importance either as swing weights or as a simple ranking. Percentages are calculated from your inputs. Nothing is pre-weighted.
 4. **Check tradeoffs** — answer pairwise comparisons and calibrate hypothetical package bundles against your own judgment, with basic consistency checks between your weights and your stated preferences.
 5. **Write the rules** — record your own rules for evidence, contingent pay, ambiguous facts, combined concessions, coworker interests, and the risk of further bargaining. These stay as your own words and are never converted into a score.
